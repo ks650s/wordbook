@@ -1,0 +1,20 @@
+<% provide(:title, 'Questions new') %>
+<h1>単語新規作成</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_with(model: @question) do |f| %>
+
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control' %>
+
+      <%= f.label :description %>
+      <%= f.text_field :description, class: 'form-control' %>
+
+      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
+
+      <%= f.submit "作成", class: "btn btn-primary" %>
+      <%= link_to "単語マスタ", questions_path %>
+    <% end %>
+  </div>
+</div>

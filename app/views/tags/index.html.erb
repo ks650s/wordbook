@@ -1,0 +1,19 @@
+<% provide(:title, 'Tags index') %>
+<h1>単語タグマスタ</h1>
+<%= link_to "タグ新規作成", new_tag_path(@tag) %>
+
+<table border='1'>
+  <tr>
+    <th>id</th>
+    <th>タグ</th>
+    <th>アクション</th>
+  </tr>
+  <tr>
+  <% @tags.each do |tag| %>
+  <td><%= tag.id %></td>
+  <td><%= tag.name %></td>
+  <td><%= link_to '修正', edit_tag_path(tag) %>・<%= link_to '削除', tag, data: { "turbo-method": :delete }%></td>
+  </tr>
+  <% end %>
+</table>
+<%= link_to "Main menu", user_path(current_user) %>
