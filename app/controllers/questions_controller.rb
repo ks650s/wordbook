@@ -8,12 +8,10 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all.order(:id)
-    @tags = Tag.all.order(:id)
   end
 
   def new
     @question = Question.new
-    @question.tags.new 
   end
 
   def create
@@ -45,7 +43,7 @@ class QuestionsController < ApplicationController
 
   private
   def question_params
-    params.require(:question).permit(:title, :description, tag_ids:[])
+    params.require(:question).permit(:title, :description, :name, tag_ids:[])
   end
 
   # ログイン済みユーザーかどうか確認

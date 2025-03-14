@@ -1,6 +1,10 @@
 class TagsController < ApplicationController
   before_action :logged_in_user
 
+  def show
+    @tag = Tag.find(params[:id])
+  end
+
   def index
     @tags = Tag.all.order(:id)
   end
