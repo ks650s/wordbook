@@ -193,6 +193,8 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.1)
@@ -359,6 +361,7 @@ DEPENDENCIES
   jbuilder (= 2.11.5)
   minitest (= 5.18.0)
   minitest-reporters (= 1.6.0)
+  pry-rails
   puma (= 5.6.8)
   rails (= 7.0.4.3)
   rails-controller-testing (= 1.0.5)

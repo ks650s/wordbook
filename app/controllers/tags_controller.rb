@@ -1,4 +1,5 @@
 class TagsController < ApplicationController
+  before_action :logged_in_user
 
   def index
     @tags = Tag.all.order(:id)
@@ -38,5 +39,13 @@ class TagsController < ApplicationController
   private
   def tag_params
     params.require(:tag).permit(:name)
+  end
+
+  # ログイン済みユーザーかどうか確認
+  def logged_in_user
+    unless logged_in?
+      flash[:danger] = "Please log in."
+      redirect_to login_url, status: :see_other
+    end
   end
 end
