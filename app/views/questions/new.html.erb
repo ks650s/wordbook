@@ -13,6 +13,11 @@
 
       <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
 
+      <span class="image">
+      <%= "画像を登録してください" %>
+      <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
+      </span>
+
       <%= f.submit "作成", class: "btn btn-primary" %>
       <%= link_to "単語マスタ", questions_path %>
     <% end %>

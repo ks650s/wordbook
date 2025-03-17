@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
+    @question.image.attach(params[:question][:image])
     if @question.save
       redirect_to questions_path
     else
@@ -43,7 +44,7 @@ class QuestionsController < ApplicationController
 
   private
   def question_params
-    params.require(:question).permit(:title, :description, :name, tag_ids:[])
+    params.require(:question).permit(:title, :description, :name, :image, tag_ids:[])
   end
 
   # ログイン済みユーザーかどうか確認
