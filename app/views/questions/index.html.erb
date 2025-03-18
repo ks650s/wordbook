@@ -16,13 +16,9 @@
   <td><%= question.id %></td>
   <td><%= question.title %></td>
   <td><%= question.description %></td>
-  <td>
-    <% question.tags.each do |tag| %>
+  <td></td> 
+  <td><% question.tags.each do |tag| %>
     <%= tag.name %>
-    <% end %>
-    </td> 
-  <td><% if question.tags %>
-    <%= question.tag_ids %>
     <% end %>
   </td>
   <td><%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, data: { "turbo-method": :delete }%></td>

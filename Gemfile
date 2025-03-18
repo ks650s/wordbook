@@ -4,6 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.6"
 
 gem "rails",           "7.0.4.3"
+gem 'cocoon'
+gem "jquery-rails"
 gem "image_processing",           "1.12.2"
 gem "active_storage_validations", "0.9.8"
 gem 'pry-rails'

@@ -13,6 +13,12 @@
 
       <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
 
+      <!--- 類義語の動的フォーム --->
+      <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
+        <%= render 'question_similar_word_fields', f: question_similar_word_form, data: {association_insertion_node: '.question_similar_words', association_insertion_method: :append} %>
+      <% end %>
+      <%= link_to_add_association "類義語を追加", f, :question_similar_words %>
+
       <span class="image">
       <%= "画像を登録してください" %>
       <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>

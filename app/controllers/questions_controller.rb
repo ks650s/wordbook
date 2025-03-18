@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question_similar_word = @question.question_similar_words.build
   end
 
   def create
@@ -44,7 +45,8 @@ class QuestionsController < ApplicationController
 
   private
   def question_params
-    params.require(:question).permit(:title, :description, :name, :image, tag_ids:[])
+    params.require(:question).permit(:title, :description, :name, :image, tag_ids:[], 
+    question_similar_words_attributes: [:id, :similar_word, :_destroy])
   end
 
   # ログイン済みユーザーかどうか確認
