@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_with(model: @question) do |f| %>
+    <%= form_with model: @question, data: {controller: "nested-fields"} do |f| %>
 
       <%= f.label :title %>
       <%= f.text_field :title, class: 'form-control' %>
@@ -13,16 +13,20 @@
 
       <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
 
+      <div>
       <!--- 類義語の動的フォーム --->
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
-        <%= render 'question_similar_word_fields', f: question_similar_word_form, data: {association_insertion_node: '.question_similar_words', association_insertion_method: :append} %>
+        <%= render 'question_similar_word_fields', f: question_similar_word_form, locals: { f: question_similar_word_form } %>
       <% end %>
       <%= link_to_add_association "類義語を追加", f, :question_similar_words %>
+      </div>
 
+      <div>
       <span class="image">
       <%= "画像を登録してください" %>
       <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
       </span>
+      </div>
 
       <%= f.submit "作成", class: "btn btn-primary" %>
       <%= link_to "単語マスタ", questions_path %>
