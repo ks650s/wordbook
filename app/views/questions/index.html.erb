@@ -16,7 +16,10 @@
   <td><%= question.id %></td>
   <td><%= question.title %></td>
   <td><%= question.description %></td>
-  <td></td> 
+  <td><% question.question_similar_words.each do |question_similar_word| %>
+  <%= question_similar_word.similar_word %>
+  <% end %>
+  </td> 
   <td><% question.tags.each do |tag| %>
     <%= tag.name %>
     <% end %>
