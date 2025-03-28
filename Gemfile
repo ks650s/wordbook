@@ -1,9 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.6"
+ruby "3.2.7"
 
 gem "rails",           "7.0.4.3"
+gem 'tzinfo-data'
 gem 'cocoon'
 gem "jquery-rails"
 gem "image_processing",           "1.12.2"
@@ -31,7 +32,7 @@ group :development do
   gem "web-console",         "4.2.0"
   gem "solargraph",          "0.51.1"
   gem "irb",                 "1.10.0"
-  gem "repl_type_completor", "0.1.2"
+  gem "repl_type_completor", "0.1.10"
 end
 
 group :test do

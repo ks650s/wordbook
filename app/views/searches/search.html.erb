@@ -1,0 +1,7 @@
+<% if @model == 'question' %>
+  <h3>【Questionsモデルの検索結果】検索ワード: <%= @content %></h3>
+  <%= render 'searches/index', questions: @records %>
+<% else @model == 'question_similar_word' %>
+  <h3>【Question_similar_wordsモデルの検索結果】検索ワード: <%= @content %></h3>
+    <%= render 'searches/index', question_similar_words: @records %>
+<% end %>

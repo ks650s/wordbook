@@ -1,5 +1,8 @@
 <% provide(:title, 'Questions index') %>
 <h1>単語マスタ</h1>
+<div class="d-flex justify-content-center mb-2">
+  <%= render "searches/form" %>
+</div>
 <%= link_to "単語新規作成", new_question_path(@question) %>
 
 <table border='1'>

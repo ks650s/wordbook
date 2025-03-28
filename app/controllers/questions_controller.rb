@@ -3,11 +3,12 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
-    @question_similar_words = @question.question_similar_words.find(params[:id])
+    # @question_similar_words = @question.question_similar_words.find(params[:id])
   end
 
   def index
     @questions = Question.all.order(:id)
+    @question_similar_words = Question_similar_word.all.order(:id)
   end
 
   def new
