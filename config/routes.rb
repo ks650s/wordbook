@@ -15,5 +15,5 @@ Rails.application.routes.draw do
   resources :users
   resources :tags
   resources :questions
-  resources :questions 
+  resources :question_similar_words
 end

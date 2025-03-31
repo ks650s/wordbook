@@ -5,15 +5,6 @@ class SearchesController < ApplicationController
     # 検索欄入力内容
     @content = params["content"]
     @records = search_for(@model, @content)
-    # @model = params[:model]
-    # @content = params[:content]
-    # @records = search_for(@model, @content)
-
-    #if @model == "Question"
-      #@records = Question.looks(@content)
-    #else
-      #@records = Question_similar_word.looks(@content)
-    #end
   end
     
   private
@@ -22,8 +13,11 @@ class SearchesController < ApplicationController
     if model  == 'question'
       Question.where('title LIKE ? OR description LIKE ? ', '%'+content+'%', '%'+content+'%')
     # 選択したモデルがquestion_similar_word(類義語）だったら
-    elsif model  == 'question_similar_word'
-      Question_similar_word.where('similar_word LIKE ?', '%'+content+'%')
+    #elsif model  == 'question_similar_word'
+    else
+      QuestionSimilarWord.where('similar_word LIKE ?', '%'+content+'%')
+      # Question_similar_word.where('similar_word LIKE ?', '%'+content+'%')
+      # Question.where('similar_word LIKE ?', '%'+content+'%')
     end
-  end
+  end 
 end

@@ -1,13 +1,13 @@
   <!--検索対象モデルがQuestionの時 -->
-  <% if @model == "Question" %>
-      <% @questions.each do |question| %>
-        <%= question.title %>
-        <%= question.description %>
+  <% if @model == "question" %>
+      <% @records.each do |record| %>
+        <%= record.title %>
+        <%= record.description %>
       <% end %>
-  <% elsif @model  == "Question_similar_word" %>
+  <% elsif @model  == "question_similar_word" %>
   <%# else %>
     <!--検索対象モデルがQuestionではない時(= 検索対象モデルがQuestion_similar_wordの時) -->
-    <% @question_similar_words.each do |question_similar_word| %>
-        <%= question_similar_word.similar_word %>
+    <% @records.each do |record| %>
+        <%= record.similar_word %>
     <% end %>
   <% end %>
