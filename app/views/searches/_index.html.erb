@@ -4,10 +4,11 @@
         <%= record.title %>
         <%= record.description %>
       <% end %>
-  <% elsif @model  == "question_similar_word" %>
-  <%# else %>
+  <%# elsif @model  == "question_similar_word" %>
+  <% else %>
     <!--検索対象モデルがQuestionではない時(= 検索対象モデルがQuestion_similar_wordの時) -->
     <% @records.each do |record| %>
         <%= record.similar_word %>
     <% end %>
   <% end %>
+  <%= link_to "単語マスタ", questions_path %>

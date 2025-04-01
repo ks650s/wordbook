@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all.order(:id)
-    @question_similar_words = Question_similar_word.all.order(:id)
+    @question_similar_words = QuestionSimilarWord.all.order(:id)
   end
 
   def new

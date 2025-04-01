@@ -1,0 +1,17 @@
+
+[1mFrom:[0m C:/Users/djseo/Downloads/wordbook-main/wordbook/app/controllers/searches_controller.rb:19 SearchesController#search_for:
+
+    [1;34m11[0m:   [32mdef[0m [1;34msearch_for[0m(model, content)
+    [1;34m12[0m:   [1;34m# 選択したモデルがquestion(単語）だったら[0m
+    [1;34m13[0m:   [32mif[0m model  == [31m[1;31m'[0m[31mquestion[1;31m'[0m[31m[0m
+    [1;34m14[0m:     [1;34;4mQuestion[0m.where([31m[1;31m'[0m[31mtitle LIKE ? OR description LIKE ? [1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m+content+[31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m+content+[31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m)
+    [1;34m15[0m:   [1;34m# 選択したモデルがquestion_similar_word(類義語）だったら[0m
+    [1;34m16[0m:   [1;34m#elsif model  == 'question_similar_word'[0m
+    [1;34m17[0m:   [32melse[0m
+    [1;34m18[0m:     [1;34;4mQuestionSimilarWord[0m.where([31m[1;31m'[0m[31msimilar_word LIKE ?[1;31m'[0m[31m[0m, [31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m+content+[31m[1;31m'[0m[31m%[1;31m'[0m[31m[0m)
+ => [1;34m19[0m:     binding.pry
+    [1;34m20[0m:     [1;34m# Question_similar_word.where('similar_word LIKE ?', '%'+content+'%')[0m
+    [1;34m21[0m:     [1;34m# Question.where('similar_word LIKE ?', '%'+content+'%')[0m
+    [1;34m22[0m:   [32mend[0m
+    [1;34m23[0m: [32mend[0m 
+

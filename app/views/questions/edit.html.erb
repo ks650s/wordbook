@@ -10,9 +10,7 @@
 
       <%= f.label :description %>
       <%= f.text_field :description, class: 'form-control' %>
-
       <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
-
       <div>
       <!--- 類義語の動的フォーム --->
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
