@@ -1,14 +1,19 @@
-  <!--検索対象モデルがQuestionの時 -->
+<!--検索対象モデルがQuestionの時-->
   <% if @model == "question" %>
       <% @records.each do |record| %>
         <%= record.title %>
         <%= record.description %>
       <% end %>
   <%# elsif @model  == "question_similar_word" %>
-  <% else %>
-    <!--検索対象モデルがQuestionではない時(= 検索対象モデルがQuestion_similar_wordの時) -->
+  <% elsif @model == "question_similar_word"  %>
+    <!--検索対象モデルがQuestion_similar_wordの時-->
     <% @records.each do |record| %>
-        <%= record.similar_word %>
+      <%= record.similar_word %>
+    <% end %>
+  <% else %>
+  <!--検索対象モデルがQuestionでもQuestion_similar_wordでもない時（検索対象モデルがTagの時-->
+    <% @records.each do |record| %>
+      <%= record.title %>
     <% end %>
   <% end %>
   <%= link_to "単語マスタ", questions_path %>

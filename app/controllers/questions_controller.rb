@@ -1,5 +1,8 @@
+require 'csv'
+
 class QuestionsController < ApplicationController
   before_action :logged_in_user
+  require 'csv'
 
   def show
     @question = Question.find(params[:id])
@@ -8,6 +11,12 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all.order(:id)
+    respond_to do |format|
+      format.html
+      format.csv do |csv|
+        send_questions_csv(@questions)
+      end
+    end
     @question_similar_words = QuestionSimilarWord.all.order(:id)
   end
 
@@ -44,7 +53,23 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
+  def send_questions_csv(questions)
+    csv_data = CSV.generate do |csv|
+      header = %w(id "単語" "意味")
+      csv << header
+
+      questions.each do |question|
+        values = [question.id, question.title, question.description]
+        csv << values
+      end
+
+    end
+    send_data(csv_data, filename: "questions.csv")
+  end
+
+
   private
+
   def question_params
     params.require(:question).permit(:title, :description, :name, :image, tag_ids:[], 
     question_similar_words_attributes: [:id, :similar_word, :_destroy])
