@@ -6,7 +6,7 @@
 // application.register('nested-form', RailsNestedForm)
 // import './add_jquery'
 // import "@nathanvda/cocoon"
-
+//import "@hotwired/turbo-rails"
 // import "controllers"
 // import "../custom/image_upload"
 // require("jquery")

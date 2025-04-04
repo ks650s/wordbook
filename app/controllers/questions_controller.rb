@@ -2,6 +2,8 @@ require 'csv'
 
 class QuestionsController < ApplicationController
   before_action :logged_in_user
+  before_action :correct_user, only: [:edit, :update, :destroy]
+
   require 'csv'
 
   def show
@@ -81,5 +83,10 @@ class QuestionsController < ApplicationController
       flash[:danger] = "Please log in."
       redirect_to login_url, status: :see_other
     end
+  end
+
+  # 正しいユーザーかどうか確認
+  def correct_user
+    
   end
 end

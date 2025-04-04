@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_17_030654) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_04_031753) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_17_030654) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "flashcards", force: :cascade do |t|
+    t.integer "correct"
+    t.integer "wrong"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "question_quizzes", force: :cascade do |t|
+    t.string "question_id"
+    t.string "quiz_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "question_similar_words", force: :cascade do |t|
     t.string "similar_word"
     t.integer "question_id", null: false
@@ -57,6 +71,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_17_030654) do
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.integer "label"
+    t.string "problem"
+    t.string "answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

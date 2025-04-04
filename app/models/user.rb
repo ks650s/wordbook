@@ -8,6 +8,7 @@ class User < ApplicationRecord
                     uniqueness: true
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+  has_many :questions
 
   # 渡された文字列のハッシュ値を返す
   def User.digest(string)
