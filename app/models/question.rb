@@ -15,6 +15,9 @@ class Question < ApplicationRecord
   has_many :question_quizzes
   has_many :quizzes, through: :question_quizzes
 
+  has_many :flashcard_questions
+  has_many :flashcards, through: :flashcard_questions
+
   validates :image,   content_type: { in: %w[image/jpeg image/gif image/png],
                                       message: "must be a valid image format" },
                       size:         { less_than: 5.megabytes,

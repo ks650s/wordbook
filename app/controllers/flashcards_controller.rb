@@ -1,26 +1,29 @@
 class FlashcardsController < ApplicationController
 
   def show
-    @flashcard = Flashcard.find(params[:id])
+    #@flashcard = Flashcard.find(params[:id])
   end
 
   def new
-    @flashcard = Flashcard.new
+    @flashcards = Question.select(:title)
+    @flashcard = @flashcards.sample(1)
+    #@flashcard = @flashcards.order("RAND()")
+  end
+
+  def create
   end
 
   def index
-    @flashcards = Flashcard.all.order(:id)
   end
 
-  # 問題を10問回答／または中断した際に保存する
-  def create
-    @flashcard = Flashcard.new(flashcard_params)
-      Question.where( 'id >= ?', rand(Question.first.id..Question.last.id) ).first
-    if @flashcard.save
-      redirect_to flashcards_path
-    else
-      render 'new', status: :unprocessable_entity
-    end
+  def destroy
   end
 
+
+  private
+
+  def flashcard_params
+    params.require(:flashcard).permit(:user_id, :title, :description, :name, 
+    question_similar_words_attributes: [:id, :similar_word, :_destroy])
+  end
 end

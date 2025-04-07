@@ -73,7 +73,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :description, :name, :image, tag_ids:[], 
+    params.require(:question).permit(:user_id, :title, :description, :name, :image, tag_ids:[], 
     question_similar_words_attributes: [:id, :similar_word, :_destroy])
   end
 
@@ -87,6 +87,8 @@ class QuestionsController < ApplicationController
 
   # 正しいユーザーかどうか確認
   def correct_user
-    
+    @questions = current_user.questions
+    @question = @questions.find_by(id: params[:id])
+    redirect_to questions_path unless @question
   end
 end

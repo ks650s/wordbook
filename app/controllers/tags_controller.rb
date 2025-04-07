@@ -1,5 +1,6 @@
 class TagsController < ApplicationController
   before_action :logged_in_user
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   def show
     @tag = Tag.find(params[:id])
@@ -51,5 +52,12 @@ class TagsController < ApplicationController
       flash[:danger] = "Please log in."
       redirect_to login_url, status: :see_other
     end
+  end
+
+  # 正しいユーザーかどうか確認
+  def correct_user
+    @tags = current_user.tags
+    @tag = @tags.find_by(id: params[:id])
+    redirect_to tags_path unless @tag
   end
 end

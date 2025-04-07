@@ -1,24 +1,13 @@
-<% provide(:title, 'Flashcard new') %>
+<% provide(:title, 'Flashcards new') %>
 <h1>単語帳</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_with(url: login_path, scope: :session) do |f| %>
-
-      <%= f.label :mondai, "問題:" %>
-      <%= f.email_field :mondai, class: 'form-control' %>
-
-      <%#= f.label :kaitou, "解答:" %>
-      <%#= f.radio_button :kaitou, : %>
-      <%#= f.radio_button :kaitou, : %>
-      <%#= f.radio_button :kaitou, : %>
-
-
-
-      <% end %>
-
-      <%= f.submit "中断する", class: "btn btn-primary" %>
-    <% end %>
-    <%= form.radio_button :answer, : %>
+  
   </div>
+</div>
+<div>
+/<!-- これで表示はできるが配列のまま　-->
+<%= @flashcard %>
+
 </div>
