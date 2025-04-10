@@ -23,17 +23,22 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @question = Question.new
-    @question_similar_word = @question.question_similar_words.build
+    p @question = Question.new
+    p @question_similar_word = @question.question_similar_words.build
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.image.attach(params[:question][:image])
+    p @question = current_user.questions.build(question_params)
+    p @question.image.attach(params[:question][:image])
     if @question.save
       redirect_to questions_path
     else
-      render 'new', status: :unprocessable_entity
+      puts @question.errors.full_messages
+  @question.question_similar_words.each do |word|
+    puts word.errors.full_messages
+  end
+  render :new
+      #render 'new', status: :unprocessable_entity
     end
   end
 

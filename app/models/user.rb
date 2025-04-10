@@ -10,6 +10,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   has_many :questions
   has_many :tags
+  has_many :flashcards, dependent: :destroy
 
   # 渡された文字列のハッシュ値を返す
   def User.digest(string)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_07_061939) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_09_074309) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,20 +42,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_07_061939) do
   create_table "flashcard_questions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_answer_index"
+    t.integer "correct_choice_index"
+    t.boolean "correct"
+    t.integer "flashcard_id", null: false
+    t.integer "question_id"
+    t.string "user_answer"
+    t.index ["flashcard_id"], name: "index_flashcard_questions_on_flashcard_id"
   end
 
   create_table "flashcards", force: :cascade do |t|
-    t.integer "correct"
-    t.integer "wrong"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "question_quizzes", force: :cascade do |t|
-    t.string "question_id"
-    t.string "quiz_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "correct_count"
+    t.index ["user_id"], name: "index_flashcards_on_user_id"
   end
 
   create_table "question_similar_words", force: :cascade do |t|
@@ -81,14 +82,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_07_061939) do
     t.integer "user_id"
   end
 
-  create_table "quizzes", force: :cascade do |t|
-    t.integer "label"
-    t.string "problem"
-    t.string "answer"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -108,6 +101,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_07_061939) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "flashcard_questions", "flashcards"
+  add_foreign_key "flashcards", "users"
   add_foreign_key "question_similar_words", "questions"
   add_foreign_key "question_tags", "questions"
   add_foreign_key "question_tags", "tags"

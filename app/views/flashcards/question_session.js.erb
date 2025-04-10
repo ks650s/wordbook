@@ -1,0 +1,7 @@
+document.getElementById("quiz-container").innerHTML = "<%= j render partial: 'question', locals: {
+  question: @question,
+  index: @index,
+  choices: @choices,
+  current_answer: @current_answer,
+  similar_words: @similar_words
+} %>";

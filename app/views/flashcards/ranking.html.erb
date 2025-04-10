@@ -1,0 +1,33 @@
+<h2>Ranking</h2>
+
+<% if @user_data %>
+  <p>
+    お疲れ様でした！あなたの成績は
+    <strong><%= @user_data[:total_questions] %>問中 <%= @user_data[:total_correct] %>問正解</strong>、
+    正解率 <strong><%= @user_data[:accuracy] %>%</strong> で
+    <strong><%= @user_rank %>位</strong> でした。
+  </p>
+<% else %>
+  <p>成績がまだありません。</p>
+<% end %>
+
+<table class="table mt-4">
+  <thead>
+    <tr>
+      <th>順位</th>
+      <th>名前</th>
+      <th>正解率</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @rankings.each_with_index do |r, i| %>
+      <tr <%= 'class="table-success"' if r[:user] == current_user %>>
+        <td><%= i + 1 %></td>
+        <td><%= r[:user].name %></td>
+        <td><%= r[:accuracy] %>%</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Main menu", user_path(current_user) %>

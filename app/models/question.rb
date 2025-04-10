@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
-  #belongs_to :user
+  belongs_to :user
   #これ消したらsaveとかupdate直った
+  #でもchatGPTによるといるらしい
 
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
@@ -11,9 +12,6 @@ class Question < ApplicationRecord
 
   has_many :question_tags
   has_many :tags, through: :question_tags
-
-  has_many :question_quizzes
-  has_many :quizzes, through: :question_quizzes
 
   has_many :flashcard_questions
   has_many :flashcards, through: :flashcard_questions

@@ -14,6 +14,8 @@
 import jquery from "jquery"
 window.jQuery = jquery
 window.$ = jquery
+import Rails from "@rails/ujs"
+Rails.start()
 //= require jquery_nested_form
 
 (function(){

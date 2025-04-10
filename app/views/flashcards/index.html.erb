@@ -1,7 +1,59 @@
-<% provide(:title, 'Flashcards index') %>
+<!--<% provide(:title, 'Flashcards index') %>
 <h1>単語帳</h1>
-<%= link_to "新しく単語帳を始める", new_path %>
+  
+<% @flashcards.each do |flashcard| %>
+  <div class="card">
+    <h3>セッションID: <%= flashcard.id %></h3>
+    <p>状態: <%= flashcard.status %></p>
 <div><%= link_to "続きから", '#' %></div>
 <div><%= link_to "もう一度やる", '#' %></div>
 <div><%= link_to "回答を見る", '#' %></div>
+ </div>
+<% end %>
+<%= link_to "Main menu", user_path(current_user) %>-->
+
+<h1>単語帳</h1>
+
+<%= form_with url: start_session_flashcards_path, method: :post, local: true do %>
+  <%= submit_tag "新しく単語帳を始める", class: "btn btn-primary mb-4" %>
+<% end %>
+
+<% if @flashcards.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>作成日</th>
+        <th>点数</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @flashcards.each do |flashcard| %>
+      <% unanswered_exists = flashcard.flashcard_questions.any? { |fq| fq.user_answer.nil? } %>
+        <tr>
+            <td>ID: <%= flashcard.id %></td>
+          <td><%= flashcard.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+          <td>
+          <% correct = flashcard.correct_count || 0 %>
+          <%= "#{correct} / 10" %></td>
+          <td>
+            <% if unanswered_exists %>
+             <%= link_to "続きから", resume_flashcard_path(flashcard), class: "btn btn-outline-primary btn-sm" %>
+            <% end %>
+
+            <% if flashcard.correct_count.present? %>
+             <%= link_to "回答を見る", result_flashcard_path(flashcard), class: "btn btn-outline-success btn-sm" %>
+            <% end %>
+
+            <%= button_to "もう一度やる", reset_flashcard_path(flashcard), method: :post, class: "btn btn-outline-warning btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>まだ単語帳セッションはありません。</p>
+<% end %>
+
 <%= link_to "Main menu", user_path(current_user) %>

@@ -1,0 +1,32 @@
+<h2>単語帳</h2>
+
+<p>正解数: <strong><%= @correct_count %></strong> / <%= @total_count %></p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>単語</th>
+      <th>意味</th>
+      <th>回答</th>
+      <th>正解・不正解</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each do |r| %>
+      <tr>
+        <td><%= r[:question].title %>の意味は？</td> <!-- result_session.html.erbとの差分でリンクじゃない-->
+        <td><%= r[:correct] %></td>
+        <td><%= r[:your_answer] || "未回答" %></td>
+        <td>
+          <% if r[:correct_answered] %>
+            <span class="text-success">正解</span>
+          <% else %>
+            <span class="text-danger">不正解</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "単語帳一覧に戻る", flashcards_path, class: "btn btn-outline-primary mt-3" %>
