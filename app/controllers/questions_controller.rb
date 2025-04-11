@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
     # @question_similar_words = @question.question_similar_words.find(params[:id])
   end
 
-  def index
+  def index 
     @questions = Question.all.order(:id)
     respond_to do |format|
       format.html
@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
         send_questions_csv(@questions)
       end
     end
-    @question_similar_words = QuestionSimilarWord.all.order(:id)
+    
   end
 
   def new

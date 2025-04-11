@@ -1,19 +1,20 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="col-md-4">
     <section class="user_info">
       <h1>
-        Main Menu
+        Main Menu 
       </h1>
-      <h2><%= @user.name %></h2>
+      <h4>現在ログイン中のユーザー： <%= @user.name %></h4>
     </section>
-  </aside>
-  <li>
-    <%= link_to "単語タグマスタ", tags_path %>
-    <%= link_to "単語マスタ", questions_path %>
-    <%= link_to "単語帳", flashcards_path %>
-    <%= link_to "ランキング", ranking_flashcards_path %>
-  </li>
+    <div>
+      <h5>下記のメニューよりクリックしてください。</h5>
+  <ul>
+    <li><%= link_to "単語タグマスタ", tags_path %></li>
+    <li><%= link_to "単語マスタ", questions_path %></li>
+    <li><%= link_to "単語帳", flashcards_path %></li>
+    <li><%= link_to "ランキング", ranking_flashcards_path %></li>
+  </ul>
+  </div>
 </div>
 <%= link_to "ログアウト", logout_path,
                                        data: { "turbo-method": :delete } %>

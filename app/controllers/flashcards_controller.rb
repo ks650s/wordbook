@@ -45,14 +45,20 @@ class FlashcardsController < ApplicationController
     question_id = session[:flashcard_questions][@index]
     # question_idをもとにDBからその問題データを取得
     @question = Question.find(question_id)
-    # 
+    # 選択肢（意味）の選出　まずQuestionからidが@questionのidと一致しないもの(where.not)を二つ(limit)descriptionのカラム指定して取得
+    # 正解に該当する選ばれた問題データのdescription取得する+足して配列の要素（正解含む3つのdescription）の順番をランダムに入れ替え
     @choices = (Question.where.not(id: @question.id).limit(2).pluck(:description) + [@question.description]).shuffle
+    # そもそもsessionで「各問題に対してユーザーが何を選んだか」を配列の形で保存
+    # session[:answers] = ["意味A", "意味B", nil, "意味C", ...]　session[:answers][1] → 2問目の回答(nilは未回答)
+    # [@index]が今何問目かだから、これは「現在の問題に対するユーザーの回答（または 未回答nil）」
     @current_answer = session[:answers][@index]
+    # 問題データの類義語からsimilar_wordカラムを取得
     @similar_words = @question.question_similar_words.pluck(:similar_word)
   
+    # 通常遷移かAjaxかに応じて適切なレスポンスを返す部分
     respond_to do |format|
-      format.html
-      format.js   # question_session.js.erb を探す
+      format.html # 通常の画面遷移
+      format.js   # question_session.js.erb を探し、JSで動的に問題を表示更新する（＝Ajax）
     end
   end
   

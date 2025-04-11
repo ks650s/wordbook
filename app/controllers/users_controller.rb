@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      RegistrationMailer.complete_registration(@user).deliver
       reset_session
       log_in @user
       redirect_to @user
@@ -30,7 +31,7 @@ class UsersController < ApplicationController
 
     def logged_in_user
       unless logged_in?
-        flash[:danger] = "Please log in."
+        flash[:danger] = "ログインしてください。"
         redirect_to login_url, status: :see_other
       end
     end

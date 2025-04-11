@@ -1,7 +1,23 @@
 <%= form_with url: search_path, method: :get, local: true do |f| %>
+    <%#= f.select :model, options_for_select({"単語" => "question", "意味" => "question", "類義語" => "question_similar_word", "タグ"=> "tag"}),
+     onchange: remote_function(url: "app\controllers\searches_controller", submit: 'form', method: 'patch') %>
+    <%= f.select :model,
+    options_for_select({ "単語" => "question", "意味" => "question", "類義語" => "question_similar_word", "タグ" => "tag" }),
+    {},
+    { onchange: remote_function(url: "searches/searchtagflag?object_name='+this.value+'", submit: 'form', method: 'patch') } %>
+
     <%= f.text_field :content %>
-    <%= f.select :model, options_for_select({"単語" => "question", "意味" => "question", "類義語" => "question_similar_word", "タグ"=> "tag"}) %>
-    <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
+<% if revealtag == "tag" %>
+  <div class="tag-check-boxes">
+    <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |cb| %>
+      <label class="tag-checkbox">
+        <%= cb.check_box %>
+        <%= cb.text %>
+      </label>
+    <% end %>
+  </div>
+<% end %>
+    <%#= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
     <%= f.submit "検索" %>
 <% end %>
 

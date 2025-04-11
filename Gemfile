@@ -5,6 +5,7 @@ ruby "3.2.7"
 
 gem "rails",           "7.0.4.3"
 gem 'tzinfo-data'
+gem "letter_opener", group: :development
 gem 'cocoon'
 gem "jquery-rails"
 gem "image_processing",           "1.12.2"

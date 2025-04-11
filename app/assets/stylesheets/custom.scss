@@ -39,14 +39,26 @@ input {
   }
 }
 
-.checkbox {
-  margin-top: -10px;
-  margin-bottom: 10px;
-  span {
-    margin-left: 20px;
-    font-weight: normal;
-  }
+.tag-check-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
 }
+
+.tag-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+// .checkbox {
+//   margin-top: -10px;
+//   margin-bottom: 10px;
+//   span {
+//     margin-left: 20px;
+//     font-weight: normal;
+//   }
+// }
 
 #session_remember_me {
   width: auto;
@@ -80,3 +92,4 @@ aside {
     }
   }
 }
+

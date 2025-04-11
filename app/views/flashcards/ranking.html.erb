@@ -21,7 +21,8 @@
   </thead>
   <tbody>
     <% @rankings.each_with_index do |r, i| %>
-      <tr <%= 'class="table-success"' if r[:user] == current_user %>>
+    <tr class="<%= 'highlight-user' if r[:user] == current_user %>">
+        <!--<tr <%= 'class="table-danger"' if r[:user] == current_user %>>-->
         <td><%= i + 1 %></td>
         <td><%= r[:user].name %></td>
         <td><%= r[:accuracy] %>%</td>

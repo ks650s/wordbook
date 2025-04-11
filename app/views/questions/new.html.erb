@@ -11,7 +11,16 @@
       <%= f.label :description %>
       <%= f.text_field :description, class: 'form-control' %>
 
-      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
+      <div class="tag-check-boxes">
+      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |cb| %>
+      <label class="tag-checkbox">
+        <%= cb.check_box %>
+        <%= cb.text %>
+      </label>
+      <% end %>
+      </div>
+
+      <%#= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
 
       <div>
       <!--- 類義語の動的フォーム --->

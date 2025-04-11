@@ -14,4 +14,8 @@
  *= require_self
  */
 
-
+ .highlight-user {
+    background-color: skyblue; /
+    color: #721c24;
+    font-weight: bold;
+  }

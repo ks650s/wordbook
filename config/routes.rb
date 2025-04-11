@@ -1,10 +1,15 @@
 Rails.application.routes.draw do
   # 単語帳問題一覧（メイン）
-  get '/index', to: "flashcards#index"
+  #get '/index', to: "flashcards#index"
   # 単語帳「新しく単語帳を始める」
-  get '/new', to: "flashcards#new"
+  #get '/new', to: "flashcards#new"
   # 単語帳「続きから」
-  get "/index", to: "tags#index"
+  #get "/index", to: "tags#index"
+
+  get '/flashcards/index', to: "flashcards#index"
+get '/tags/index', to: "tags#index"
+get '/questions/index', to: "questions#index", as: 'questions_index'
+
 
   get "/new", to: "tags#new" 
   get "/create", to: "tags#create"
@@ -21,6 +26,12 @@ Rails.application.routes.draw do
   post   "/login",   to: "sessions#create"
   delete "/logout",  to: "sessions#destroy", as: "logout"
   get "/search", to: "searches#search"
+
+  resources :searches do
+    collection do
+      patch 'searchtagflag'
+    end
+  end
 
   post '/submit_current_answer', to: 'flashcards#submit_current_answer', as: :submit_current_answer
   resources :users
