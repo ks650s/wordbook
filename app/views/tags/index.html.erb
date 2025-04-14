@@ -12,8 +12,13 @@
   <% @tags.each do |tag| %>
   <td><%= tag.id %></td>
   <td><%= tag.name %></td>
-  <td><%= link_to '修正', edit_tag_path(tag) %>・<%= link_to '削除', tag, data: { "turbo-method": :delete }%></td>
+  <td>
+   <% if tag.user_id == current_user.id %>
+   <%= link_to '修正', edit_tag_path(tag) %>・<%= link_to '削除', tag, data: { "turbo-method": :delete }%>
+  <% else %>
+    作成者のみ
+    <% end %></td>
   </tr>
   <% end %>
 </table>
-<%= link_to "Main menu", user_path(current_user) %>
+<%= link_to "メインメニュー", user_path(current_user) %>

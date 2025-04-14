@@ -5,6 +5,8 @@ ruby "3.2.7"
 
 gem "rails",           "7.0.4.3"
 gem 'tzinfo-data'
+gem "will_paginate",           "3.3.1"
+gem "bootstrap-will_paginate", '~> 1.0.0'
 gem "letter_opener", group: :development
 gem 'cocoon'
 gem "jquery-rails"

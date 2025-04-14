@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
-    # @question_similar_words = @question.question_similar_words.find(params[:id])
+    @question_similar_words = @question.question_similar_words.find(params[:id])
   end
 
   def index 
@@ -24,7 +24,9 @@ class QuestionsController < ApplicationController
 
   def new
     p @question = Question.new
-    p @question_similar_word = @question.question_similar_words.build
+    #@question_similar_word = @question.question_similar_words.build
+    #@question.question_similar_words.build
+    1.times { @question.question_similar_words.build }
   end
 
   def create

@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <th>単語</th>
-      <th>意味</th>
+      <!--<th>意味</th>-->
       <th>回答</th>
       <th>正解・不正解</th>
     </tr>
@@ -16,7 +16,7 @@
     <% @results.each_with_index do |r, i| %>
       <tr>
         <td><%= link_to r[:question].title, question_session_flashcards_path(index: i), class: "text-primary" %>の意味は？</td>
-        <td><%= r[:correct] %></td>
+        <!--<td><%= r[:correct] %></td>-->
         <td><%= r[:your_answer] || "未回答" %></td>
         <td class="grading-column" style="display: none;">
           <% if r[:correct_answered] %>
@@ -31,7 +31,7 @@
 </table>
 
 <button id="show-grading-btn" class="btn btn-success">採点する</button>
-<%= link_to "中断する（単語帳へ戻る）", flashcards_path %>
+<%= link_to "単語帳へ戻る", flashcards_path %>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

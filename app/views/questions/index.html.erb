@@ -26,10 +26,15 @@
   <td><% question.tags.each do |tag| %>
     <%= tag.name %>
     <% end %>
-  </td>
-  <td><%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, data: { "turbo-method": :delete }%></td>
+  </td>   
+  <td><% if question.user_id == current_user.id %>
+  <%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, data: { "turbo-method": :delete }%>
+  <% else %>
+    作成者のみ
+    <% end %></td>
   </tr>
   <% end %>
 </table>
 <%= link_to 'CSVダウンロード', questions_path(format: :csv) %>
-<%= link_to "Main menu", user_path(current_user) %>
+<div></div>
+<%= link_to "メインメニュー", user_path(current_user) %>

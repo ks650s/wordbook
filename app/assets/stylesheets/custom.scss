@@ -93,3 +93,9 @@ aside {
   }
 }
 
+/* radiobutton */
+
+input[type="radio"] {
+  width: auto !important;
+  margin-right: 8px;
+}

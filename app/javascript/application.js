@@ -5,19 +5,23 @@
 // const application = Application.start() // Should exist already
 // application.register('nested-form', RailsNestedForm)
 // import './add_jquery'
-// import "@nathanvda/cocoon"
+
 //import "@hotwired/turbo-rails"
 // import "controllers"
 // import "../custom/image_upload"
-// require("jquery")
+
 // require("@nathanvda/cocoon")
 import jquery from "jquery"
 window.jQuery = jquery
 window.$ = jquery
-import Rails from "@rails/ujs"
-Rails.start()
-//= require jquery_nested_form
 
+import "bootsrap"
 (function(){
   alert("jQuery 動いた！")
 })
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("add_fields の数: ", document.querySelectorAll('.add_fields').length);
+});
+
+import "@nathanvda/cocoon"

@@ -18,6 +18,10 @@
   <%= submit_tag "新しく単語帳を始める", class: "btn btn-primary mb-4" %>
 <% end %>
 
+<%= will_paginate @flashcards,
+      previous_label: '前へ',
+      next_label: '次へ' %>
+
 <% if @flashcards.any? %>
   <table class="table">
     <thead>
@@ -56,4 +60,4 @@
   <p>まだ単語帳セッションはありません。</p>
 <% end %>
 
-<%= link_to "Main menu", user_path(current_user) %>
+<%= link_to "メインメニュー", user_path(current_user) %>

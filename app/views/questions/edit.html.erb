@@ -1,16 +1,24 @@
 <% provide(:title, "Edit question") %>
-<h1>Update your question</h1>
+<h1>単語を編集</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_with(model: @question) do |f| %>
       
-      <%= f.label :title %>
+      <%= f.label :title, "単語" %>
       <%= f.text_field :title, class: 'form-control' %>
 
-      <%= f.label :description %>
+      <%= f.label :description, "意味" %>
       <%= f.text_field :description, class: 'form-control' %>
-      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
+      <h5><strong>タグを選択してください</strong></h5>
+      <div class="tag-check-boxes">
+      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |cb| %>
+      <label class="tag-checkbox">
+        <%= cb.check_box %>
+        <%= cb.text %>
+      </label>
+      <% end %>
+      </div>
       <div>
       <!--- 類義語の動的フォーム --->
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
@@ -21,12 +29,12 @@
 
       <div>
       <span class="image">
-      <%= "画像を登録してください" %>
+      <h5><strong>画像を登録してください（任意）</strong></h5>
       <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
       </span>
       </div>
 
-      <%= f.submit "Save changes", class: "btn btn-primary" %>
+      <%= f.submit "編集内容を保存", class: "btn btn-primary" %>
       <%= link_to "単語マスタ", questions_path %>
     <% end %>
   </div>

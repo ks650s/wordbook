@@ -7,7 +7,7 @@ class FlashcardsController < ApplicationController
 
   # index(単語帳メインページ)で現在ログインしてるユーザーの過去セッションを並べる
   def index
-    @flashcards = current_user.flashcards.includes(:flashcard_questions).order(created_at: :desc)
+    @flashcards = current_user.flashcards.includes(:flashcard_questions).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
   end
 
 

@@ -4,15 +4,17 @@
   <p><strong>類義語:</strong> <%= similar_words.join(", ") %></p>
 <% end %>
 <p><strong>解答</strong></p>
+<div class="text-start">
 <%= form_with url: submit_session_answer_flashcards_path(index: index), method: :post, local: false do %>
   <% choices.each_with_index do |choice, i| %>
-    <div class="form-check">
-      <%= radio_button_tag :answer, choice, choice == current_answer, id: "choice_#{i}", class: "form-check-input" %>
+    <div class="form-check text-start">
+      <%= radio_button_tag :answer, choice, choice == current_answer, id: "choice_#{i}", class: "form-check-input me-2" %>
       <%= label_tag "choice_#{i}", choice, class: "form-check-label" %>
     </div>
   <% end %>
   <%= submit_tag "回答する", class: "btn btn-primary mt-3" %>
 <% end %>
+</div>
 
 <div class="d-flex justify-content-between mt-3">
   <% if index > 0 %>
@@ -24,7 +26,7 @@
   <% if index < session[:flashcard_questions].size - 1 %>
     <%= link_to "次の問題", question_session_flashcards_path(index: index + 1), remote: true, class: "btn btn-secondary" %>
   <% else %>
-    <%= link_to "採点結果を見る", result_session_flashcards_path, class: "btn btn-success" %>
+    <%= link_to "採点する", result_session_flashcards_path, class: "btn btn-success" %>
   <% end %>
 </div>
 

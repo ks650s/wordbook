@@ -13,10 +13,10 @@ class SearchesController < ApplicationController
     @records = search_for(@model, @content, @keywords)
   end
 
-  def searchtagflag
-    @revealtag = params[:object_name]
-    render partial: "form", locals: { revealtag: @revealtag }
-  end
+  # def searchtagflag
+  #   @revealtag = params[:object_name]
+  #   render partial: "form", locals: { revealtag: @revealtag }
+  # end
   
     
   private
