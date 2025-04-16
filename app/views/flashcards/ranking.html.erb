@@ -1,13 +1,13 @@
 <h2>ランキング</h2>
 
-<% if @user_data %>
+<% if @show_user_data && @user_data %>
   <p>
     お疲れ様でした！あなたの成績は
     <strong><%= @user_data[:total_questions] %>問中 <%= @user_data[:total_correct] %>問正解</strong>、
     正解率 <strong><%= @user_data[:accuracy] %>%</strong> で
     <strong><%= @user_rank %>位</strong> でした。
   </p>
-<% else %>
+<% elsif @show_user_data %>
   <p>成績がまだありません。</p>
 <% end %>
 
@@ -21,8 +21,7 @@
   </thead>
   <tbody>
     <% @rankings.each_with_index do |r, i| %>
-    <tr class="<%= 'highlight-user' if r[:user] == current_user %>">
-        <!--<tr <%= 'class="table-danger"' if r[:user] == current_user %>>-->
+    <tr class="<%= 'highlight-user' if r[:user].id == current_user.id %>">
         <td><%= i + 1 %></td>
         <td><%= r[:user].name %></td>
         <td><%= r[:accuracy] %>%</td>

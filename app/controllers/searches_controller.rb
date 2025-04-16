@@ -1,4 +1,6 @@
 class SearchesController < ApplicationController
+  before_action :require_login, only: [:search]
+  
   def search
     # モデル選択
     @model = params["model"]
@@ -12,12 +14,6 @@ class SearchesController < ApplicationController
     # recordsに全部入れる
     @records = search_for(@model, @content, @keywords)
   end
-
-  # def searchtagflag
-  #   @revealtag = params[:object_name]
-  #   render partial: "form", locals: { revealtag: @revealtag }
-  # end
-  
     
   private
     def search_for(model, content, keywords)

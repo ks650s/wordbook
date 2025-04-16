@@ -7,11 +7,24 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
   has_secure_password
-  validates :password, presence: true
+  # 英大文字・小文字・数字すべて含む10文字以上
+  validates :password,
+  length: { minimum: 10 },
+  format: {
+    # パスワード用の正規表現について
+    # /\A ... \z/は\A：文字列の先、\z：文字列の末尾　つまり文字列全体がこのパターンに一致すること
+    # (?=.*[a-z])は.*：任意の文字を0文字以上、[a-z]：英小文字が含まれていることをチェック　つまりどこかに英小文字が1つ以上あること
+    # (?=.*[A-Z])はどこかに英大文字が1つ以上あること
+    # (?=.*\d)は\d：数字（0〜9）　つまりどこかに数字が1つ以上あること
+    # [^\s]+は空白文字以外の文字を1文字以上含む（記号もOK）
+    with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^\s]+\z/,
+    message: "は10文字以上かつ英大文字・小文字・数字をすべて含めてください（空白は含めないでください）"
+  }
+  
   has_many :questions
   has_many :tags
   has_many :flashcards, dependent: :destroy
-
+  
   # 渡された文字列のハッシュ値を返す
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

@@ -15,4 +15,5 @@ ja:
       taken: は既に存在します。
       confirmation: が確認用のものと一致しません。
       invalid: が不正です。
+      too_short: は%{count}文字以上で入力してください。
       

@@ -1,8 +1,20 @@
-<%# Ajaxで次の問題を読み込み %>
-document.getElementById("quiz-container").innerHTML = "<%= j render partial: 'question', locals: {
+<!-- Ajaxで次の問題を読み込み -->
+<!--document.getElementById("quiz-container").innerHTML = "<%= j render partial: 'question', locals: {
   question: @question,
   index: @index,
   choices: @choices,
   current_answer: @current_answer,
   similar_words: @similar_words
-} %>";
+} %>";-->
+
+<% if @question.present? %>
+  document.getElementById("quiz-container").innerHTML = "<%= j render partial: 'question', locals: {
+    question: @question,
+    index: @index,
+    choices: @choices,
+    current_answer: @current_answer,
+    similar_words: @similar_words
+  } %>";
+<% else %>
+  window.location.href = "<%= result_session_flashcards_path %>";
+<% end %>

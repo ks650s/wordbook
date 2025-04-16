@@ -1,39 +1,3 @@
-<!--<h2>問題 <%= @index + 1 %> / <%= session[:flashcard_questions].size %></h2>
-
-<p><strong>単語:</strong> <%= @question.title %></p>
-<% if @similar_words.present? %>
-  <p><strong>類義語:</strong>
-    <%= @similar_words.join(", ") %>
-  </p>
-<% end %>
-
-<%= form_with url: submit_session_answer_flashcards_path(index: @index), method: :post, local: true do %>
-  <% @choices.each_with_index do |choice, i| %>
-    <div class="form-check">
-      <%= radio_button_tag :answer, choice, choice == @current_answer, id: "choice_#{i}", class: "form-check-input" %>
-      <%= label_tag "choice_#{i}", choice, class: "form-check-label" %>
-    </div>
-  <% end %>
-  <%= submit_tag "回答する", class: "btn btn-primary mt-3" %>
-<% end %>
-
-<hr>
-
-<div class="d-flex justify-content-between mt-3">
-  <% if @index > 0 %>
-    <%= link_to "⬅ 前の問題", question_session_flashcards_path(index: @index - 1), class: "btn btn-secondary" %>
-  <% else %>
-    <div></div>
-  <% end %>
-
-  <% if @index < session[:flashcard_questions].size - 1 %>
-    <%= link_to "次の問題 ➡", question_session_flashcards_path(index: @index + 1), class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to "採点結果を見る", result_session_flashcards_path, class: "btn btn-success" %>
-  <% end %>
-</div>
-<%= button_to "中断する", interrupt_flashcards_path, method: :post, class: "btn btn-danger mt-4" %>-->
-
 <div id="quiz-container">
   <%= render partial: 'question', locals: {
     question: @question,

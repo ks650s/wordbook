@@ -5,3 +5,5 @@ document.getElementById("quiz-container").innerHTML = "<%= j render partial: 'qu
   current_answer: @current_answer,
   similar_words: @similar_words
 } %>";
+
+<%# Ajaxで送信されたリクエストのレスポンスとして、HTMLを生成して返し、それをJavaScriptで指定した場所に埋め込んでいる %>

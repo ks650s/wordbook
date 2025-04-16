@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_09_074309) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_15_025912) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -56,7 +56,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_09_074309) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.integer "correct_count"
+    t.integer "score"
     t.index ["user_id"], name: "index_flashcards_on_user_id"
+  end
+
+  create_table "question_quizzes", force: :cascade do |t|
+    t.string "question_id"
+    t.string "quiz_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "question_similar_words", force: :cascade do |t|
@@ -80,6 +88,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_09_074309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.integer "label"
+    t.string "problem"
+    t.string "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|

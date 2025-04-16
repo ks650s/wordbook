@@ -1,8 +1,5 @@
-require 'csv'
-
 class QuestionsController < ApplicationController
-  before_action :logged_in_user
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :require_login, only: [:show, :new, :create, :edit, :update, :destroy]
 
   require 'csv'
 
@@ -23,15 +20,16 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    p @question = Question.new
+    @question = Question.new
     #@question_similar_word = @question.question_similar_words.build
     #@question.question_similar_words.build
+    # 類義語入力欄が二つ増えるのを防止する為
     1.times { @question.question_similar_words.build }
   end
 
   def create
-    p @question = current_user.questions.build(question_params)
-    p @question.image.attach(params[:question][:image])
+    @question = current_user.questions.build(question_params)
+    @question.image.attach(params[:question][:image])
     if @question.save
       redirect_to questions_path
     else
@@ -84,18 +82,4 @@ class QuestionsController < ApplicationController
     question_similar_words_attributes: [:id, :similar_word, :_destroy])
   end
 
-  # ログイン済みユーザーかどうか確認
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "Please log in."
-      redirect_to login_url, status: :see_other
-    end
-  end
-
-  # 正しいユーザーかどうか確認
-  def correct_user
-    @questions = current_user.questions
-    @question = @questions.find_by(id: params[:id])
-    redirect_to questions_path unless @question
-  end
 end

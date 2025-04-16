@@ -86,4 +86,6 @@ Rails.application.configure do
   config.hosts << pf_host
 
   config.action_cable.allowed_request_origins = ["https://#{pf_host}"]
+
+  # config.session_store :cookie_store, key: '_your_app_session'
 end

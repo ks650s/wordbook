@@ -1,6 +1,5 @@
 class TagsController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :require_login, only: [:show, :new, :create, :edit, :update, :destroy]
 
   def show
     @tag = Tag.find(params[:id])
@@ -42,22 +41,8 @@ class TagsController < ApplicationController
   end
 
   private
-  
+
   def tag_params
     params.require(:tag).permit(:name)
-  end
-
-  # ログイン済みユーザーかどうか確認
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "ログインしてください。"
-      redirect_to login_path, status: :see_other
-    end
-  end
-
-  # 正しいユーザーかどうか確認
-  def correct_user
-    @user = User.find(params[:id])
-      redirect_to(root_path, status: :see_other) unless @user == current_user
   end
 end

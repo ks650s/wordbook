@@ -14,9 +14,9 @@
   <tbody>
     <% @results.each do |r| %>
       <tr>
-        <td><%= r[:question].title %>の意味は？</td> <!-- result_session.html.erbとの差分でリンクじゃない-->
-        <td><%= r[:correct] %></td>
-        <td><%= r[:your_answer] || "未回答" %></td>
+        <td><%= r[:question].title %>の意味は？</td> 
+        <td><%= r[:correct_answer] %></td>
+        <td><%= r[:user_answer].presence || "未回答" %></td>
         <td>
           <% if r[:correct_answered] %>
             <span class="text-success">正解</span>
@@ -28,5 +28,10 @@
     <% end %>
   </tbody>
 </table>
+
+<!--条件分岐でsession_result経由でこのページに遷移した場合にのみ表示-->
+<% if params[:from_session] %>
+<%= link_to "ランキングを見る", ranking_flashcards_path(from_result: true) %>
+<% end %>
 
 <%= link_to "単語帳へ戻る", flashcards_path, class: "btn btn-outline-primary mt-3" %>

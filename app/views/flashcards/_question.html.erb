@@ -15,7 +15,6 @@
   <%= submit_tag "回答する", class: "btn btn-primary mt-3" %>
 <% end %>
 </div>
-
 <div class="d-flex justify-content-between mt-3">
   <% if index > 0 %>
     <%= link_to "前の問題", question_session_flashcards_path(index: index - 1), remote: true, class: "btn btn-secondary" %>
@@ -25,8 +24,8 @@
 
   <% if index < session[:flashcard_questions].size - 1 %>
     <%= link_to "次の問題", question_session_flashcards_path(index: index + 1), remote: true, class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to "採点する", result_session_flashcards_path, class: "btn btn-success" %>
+  <%# else %>
+    <%#= link_to "採点する", result_session_flashcards_path, class: "btn btn-success" %>
   <% end %>
 </div>
 
