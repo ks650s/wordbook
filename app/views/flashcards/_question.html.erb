@@ -12,7 +12,8 @@
       <%= label_tag "choice_#{i}", choice, class: "form-check-label" %>
     </div>
   <% end %>
-  <%= submit_tag "回答する", class: "btn btn-primary mt-3" %>
+  <%#= submit_tag "回答する", class: "btn btn-primary mt-3" %>
+  <%= submit_tag (index == session[:flashcard_questions].size - 1 ? "採点する" : "回答する"), class: "btn btn-primary mt-3" %>
 <% end %>
 </div>
 <div class="d-flex justify-content-between mt-3">

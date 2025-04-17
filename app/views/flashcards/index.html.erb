@@ -4,7 +4,7 @@
   <%= submit_tag "新しく単語帳を始める", class: "btn btn-primary mb-4" %>
 <% end %>
 
-<%= will_paginate @flashcards,
+<%= will_paginate @flashcards_raw,
       previous_label: '前へ',
       next_label: '次へ' %>
 
@@ -20,9 +20,19 @@
       </tr>
     </thead>
     <tbody>
-      <% @flashcards.each do |flashcard| %>
-      <% unanswered_exists = flashcard.flashcard_questions.any? { |fq| fq.user_answer.blank? } || 
-        (flashcard.flashcard_questions.size == 10 && flashcard.flashcard_questions.all? { |fq| fq.user_answer.present? } && flashcard.correct_count.nil?) %>
+      <% @flashcards.each do |fc| %>
+      <% flashcard = fc[:flashcard] %>
+      <% answered_count = fc[:answered_count] %>
+      <% graded = fc[:graded] %>
+      <% all_answered = flashcard.flashcard_questions.all? { |fq| fq.user_answer.present? } %>
+      <% answered_count = flashcard.flashcard_questions.count { |fq| fq.user_answer.present? } %>
+      <% is_not_graded = all_answered && flashcard.correct_count.nil? %>
+      <% unanswered_exists = answered_count < 10 && !is_not_graded %>
+
+      <% is_answered_10 = fc[:answered_count] == 10 %>
+<% is_graded = fc[:graded] %>
+<% has_unanswered = fc[:answered_count] < 10 %>
+
         <tr>
           <td>ID: <%= flashcard.id %></td>
           <td><%= flashcard.created_at.strftime("%Y/%m/%d %H:%M") %></td>
@@ -30,15 +40,11 @@
           <% correct = flashcard.correct_count || 0 %>
           <%= "#{correct} / 10" %></td>
           <td>
-            <%# if unanswered_exists %>
-             <%#= link_to "続きから", resume_flashcard_path(flashcard), class: "btn btn-outline-primary btn-sm" %>
-            <%# end %>
-            <% if unanswered_exists %>
-              <%= link_to "続きから", resume_flashcard_path(flashcard), class: "btn btn-outline-primary btn-sm" %>
-            <% end %>
-            <% if unanswered_exists && flashcard.correct_count.nil? %>
-              <%= link_to "採点前画面へ", result_session_flashcards_path, class: "btn btn-outline-secondary btn-sm" %>
-            <% end %>
+          <% if unanswered_exists %>
+            <%= link_to "続きから", resume_flashcard_path(flashcard), class: "btn btn-outline-primary btn-sm" %>
+          <% elsif is_not_graded %>
+            <%= link_to "採点前画面へ", result_session_flashcards_path(flashcard_id: flashcard.id), method: :get %>
+          <% end %>
 
             <% if flashcard.correct_count.present? %>
              <%= link_to "回答を見る", result_flashcard_path(flashcard), class: "btn btn-outline-success btn-sm" %>
@@ -47,9 +53,11 @@
             <%= button_to "もう一度やる", reset_flashcard_path(flashcard), method: :post, class: "btn btn-outline-warning btn-sm" %>
           </td>
           <td>
-              <%#= "全回答済み: #{all_answered}" %>
-              <%#= "未回答あり: #{unanswered_exists}" %>
-              <%#= "採点前: #{is_not_graded}" %>
+              <ul style="list-style: none; padding-left: 0;">
+    <li>10回答済み: <%= is_answered_10 %></li>
+    <li>採点済み: <%= is_graded %></li>
+    <li>未回答あり: <%= has_unanswered %></li>
+  </ul>
           </td>
         </tr>
       <% end %>

@@ -11,8 +11,19 @@ class FlashcardsController < ApplicationController
 
   # index(単語帳メインページ)で現在ログインしてるユーザーの過去セッションを並べる
   # 作成時間（降順）かつページネーション
-  def index
-    @flashcards = current_user.flashcards.includes(:flashcard_questions).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
+  def index    
+    #@flashcards = current_user.flashcards.includes(:flashcard_questions).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
+    @flashcards_raw = Flashcard.where(user: current_user)
+                             .order(created_at: :desc)
+                             .paginate(page: params[:page], per_page: 5)
+
+  @flashcards = @flashcards_raw.map do |fc|
+    {
+      flashcard: fc,
+      answered_count: fc.flashcard_questions.count { |fq| fq.user_answer.present? },
+      graded: fc.correct_count.present?
+    }
+  end
   end
 
 
@@ -58,10 +69,11 @@ class FlashcardsController < ApplicationController
     
     # 選択肢保存ハッシュがfalseや未定義だったら空のハッシュになる
     session[:choices] ||= {}
-
+  Rails.logger.debug "index: #{params[:index].inspect}"
     # セッションの「何問目」かをparams[:index]から受け取り、整数に変換して@indexに代入
     # 例: `/flashcards/question_session?index=2` のようなURLで3問目を出す
     @index = params[:index].to_i
+  Rails.logger.debug "index after conversion: #{index}"
     # セッションに保存された10問のquestion_idリスト（session[:flashcard_questions]）から、現在のインデックスの問題idを取得
     question_id = session[:flashcard_questions][@index]
     # question_idをもとにDBからその問題データを取得
@@ -70,6 +82,12 @@ class FlashcardsController < ApplicationController
     # 現在の問題（@index番目）に対して、すでに選択肢がセッションに保存されているかを確認
     # 例：2問目（@index = 1）の場合 → session[:choices]["1"] あれば再生成しない
     # .to_sで文字列化させてる理由は、sessionが文字列キーのハッシュなので整数のまま（@index）だとキーを見つけられない
+    Rails.logger.debug session[:choices][@index]
+    Rails.logger.debug @index
+
+    Rails.logger.debug session[:choices]
+
+
     if session[:choices][@index.to_s].present?
       # セッションに既にある選択肢を変数@choicesに代入　viewで使う
       @choices = session[:choices][@index.to_s]
@@ -83,6 +101,7 @@ class FlashcardsController < ApplicationController
       @choices = (incorrect_choices + [@question.description]).shuffle
       session[:choices][@index.to_s] = @choices
     end
+    Rails.logger.debug session[:answers]
       
     # そもそもsessionで「各問題に対してユーザーが何を選んだか」を配列の形で保存
     # session[:answers] = ["意味A", "意味B", nil, "意味C", ...]　session[:answers][1] → 2問目の回答(nilは未回答)
@@ -131,44 +150,87 @@ class FlashcardsController < ApplicationController
     end
   end
 
-
-  # 採点前確認ページ
   def result_session
+    if params[:flashcard_id].present?
+      flashcard = Flashcard.find_by(id: params[:flashcard_id], user_id: current_user.id)
+  
+      unless flashcard
+        redirect_to flashcards_path, alert: "問題情報が見つかりませんでした。" and return
+      end
 
-  #これは普通に中断抜きでも適応されちゃうから消した
-  # 回答が10問あるかどうかをチェック
-  #answered_all = session[:answers]&.size == 10
-  # 採点済みかどうか（=中断されたか）
-  #is_not_graded = session[:graded] != true
-  # 採点済みかつ未回答なら再開ページにリダイレクト
-  #unless answered_all && is_not_graded
-    #redirect_to resume_flashcard_path(session[:current_flashcard_id]) and return
-  #end
-
-    # 結果ページであっても、中断状態を確認
-  #if session[:interrupted]
-    # 中断した問題から再開する
-    #redirect_to resume_flashcards_path
-  #else
-    # セッション開始時、選出された10問のquestion_id配列を取得
-    @question_ids = session[:flashcard_questions]
+      session[:current_flashcard_id] ||= flashcard.id
+      questions = flashcard.flashcard_questions.includes(:question)
+      session[:flashcard_questions] ||= questions.map(&:question_id)
+      session[:answers] ||= flashcard.flashcard_questions.map(&:user_answer)
   
-    #セッション消えた時用
-    if @question_ids.blank?
-      redirect_to flashcards_path, alert: "問題情報が見つかりませんでした。" and return
-    end
+      @questions = questions.map(&:question)
+      @user_answers = questions.map(&:user_answer)
   
-    # 
-    @user_answers = session[:answers] || {}
-    @questions = Question.find(@question_ids)
+      @results = questions.each_with_index.map do |fq, i|
+        {
+          question: fq.question,
+          answer: fq.user_answer
+        }
+      end
+    else
+      # fallback（初回のセッションプレイ時のみ必要）
+      @question_ids = session[:flashcard_questions]
   
-    @results = @questions.each_with_index.map do |q, i|
-      {
-        question: q,
-        answer: @user_answers[i]
-      }
+      if @question_ids.blank?
+        redirect_to flashcards_path, alert: "問題情報が見つかりませんでした。" and return
+      end
+  
+      @user_answers = session[:answers] || {}
+      @questions = Question.find(@question_ids)
+  
+      @results = @questions.each_with_index.map do |q, i|
+        {
+          question: q,
+          answer: @user_answers[i]
+        }
+      end
     end
   end
+  
+
+
+  # # 採点前確認ページ
+  # def result_session
+
+  # #これは普通に中断抜きでも適応されちゃうから消した
+  # # 回答が10問あるかどうかをチェック
+  # #answered_all = session[:answers]&.size == 10
+  # # 採点済みかどうか（=中断されたか）
+  # #is_not_graded = session[:graded] != true
+  # # 採点済みかつ未回答なら再開ページにリダイレクト
+  # #unless answered_all && is_not_graded
+  #   #redirect_to resume_flashcard_path(session[:current_flashcard_id]) and return
+  # #end
+
+  #   # 結果ページであっても、中断状態を確認
+  # #if session[:interrupted]
+  #   # 中断した問題から再開する
+  #   #redirect_to resume_flashcards_path
+  # #else
+  #   # セッション開始時、選出された10問のquestion_id配列を取得
+  #   @question_ids = session[:flashcard_questions]
+  
+  #   #セッション消えた時用
+  #   if @question_ids.blank?
+  #     redirect_to flashcards_path, alert: "問題情報が見つかりませんでした。" and return
+  #   end
+  
+  #   # 
+  #   @user_answers = session[:answers] || {}
+  #   @questions = Question.find(@question_ids)
+  
+  #   @results = @questions.each_with_index.map do |q, i|
+  #     {
+  #       question: q,
+  #       answer: @user_answers[i]
+  #     }
+  #   end
+  # end
 
 
   # 単語帳セッション中の「中断する」で単語帳セッション一覧に戻る
@@ -230,22 +292,29 @@ class FlashcardsController < ApplicationController
     # first_unanswered = session[:answers].index(nil) || 0
     # redirect_to question_session_flashcards_path(index: first_unanswered)
 
-    if session[:answers].all? { |answer| answer.present? } && !session[:interrupted]
-      # 中断処理を行い、続きから再開できるようにフラグを設定
-      session[:interrupted] = true
-      redirect_to question_session_flashcards_path(index: session[:answers].size) # 次の問題（再開位置）から始める
-    else
-      # 最初の未回答の問題に遷移
-      first_unanswered = session[:answers].index(nil)
-      if first_unanswered
-        redirect_to question_session_flashcards_path(index: first_unanswered)
-      else
-      # 全問回答済みの場合、結果画面に遷移
-        redirect_to result_session_flashcard_path(flashcard)
-        # redirect_to result_session_flashcards_path
-        # sつければ直るが、question_sessionのほうで二問目に遷移しなくなる
-      end
-    end
+    if session[:answers].all? { |answer| answer.present? }
+  redirect_to result_session_flashcards_path
+else
+  first_unanswered = session[:answers].index(nil) || 0
+  redirect_to question_session_flashcards_path(index: first_unanswered)
+end
+
+    # if session[:answers].all? { |answer| answer.present? } && !session[:interrupted]
+    #   # 中断処理を行い、続きから再開できるようにフラグを設定
+    #   session[:interrupted] = true
+    #   redirect_to question_session_flashcards_path(index: session[:answers].size) # 次の問題（再開位置）から始める
+    # else
+    #   # 最初の未回答の問題に遷移
+    #   first_unanswered = session[:answers].index(nil)
+    #   if first_unanswered
+    #     redirect_to question_session_flashcards_path(index: first_unanswered)
+    #   else
+    #   # 全問回答済みの場合、結果画面に遷移
+    #     redirect_to result_session_flashcard_path(flashcard)
+    #     # redirect_to result_session_flashcards_path
+    #     # sつければ直るが、question_sessionのほうで二問目に遷移しなくなる
+    #   end
+    # end
   end
 
 
@@ -326,6 +395,26 @@ class FlashcardsController < ApplicationController
     session[:flashcard_questions] = question_ids
     session[:answers] = Array.new(question_ids.size)
     session[:current_flashcard_id] = flashcard.id
+
+
+    session[:choices] = {}
+question_ids.each_with_index do |qid, index|
+  correct = Question.find(qid).description
+  distractors = Question.where.not(id: qid).order("RANDOM()").limit(2).pluck(:description)
+  session[:choices][index.to_s] = ([correct] + distractors).shuffle
+end
+
+    # session[:choices] = question_ids.map do |qid|
+    #   correct = Question.find(qid).description
+    #   distractors = Question.where.not(id: qid).order("RANDOM()").limit(2).pluck(:description)
+    #   ([correct] + distractors).shuffle
+    # end
+
+    Rails.logger.debug session[:flashcard_questions]
+    Rails.logger.debug session[:answers]
+    Rails.logger.debug session[:current_flashcard_id]
+    Rails.logger.debug session[:choices]
+
 
     # 回答情報を初期化（保存している場合）
     flashcard.flashcard_questions.update_all(user_answer: nil)

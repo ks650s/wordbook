@@ -10,6 +10,7 @@
 
       <%= f.label :description, "意味" %>
       <%= f.text_field :description, class: 'form-control' %>
+
       <h5><strong>タグを選択してください</strong></h5>
       <div class="tag-check-boxes">
       <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |cb| %>
@@ -19,13 +20,27 @@
       </label>
       <% end %>
       </div>
+
       <div>
       <!--- 類義語の動的フォーム --->
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
-        <%= render 'question_similar_word_fields', f: question_similar_word_form, locals: { f: question_similar_word_form } %>
+        <%= render 'question_similar_word_fields', f: question_similar_word_form %>
       <% end %>
       <%= link_to_add_association "類義語を追加", f, :question_similar_words %>
       </div>
+
+      <h5><strong>現在登録している画像</strong></h5>
+      <% if @question.image.attached? %>
+        <div class="img-container">
+          <%= image_tag @question.image, class: "img-thumbnail", alt: "登録済み画像" %>
+        </div>
+        <div class="form-check mb-3 d-flex align-items-center">
+          <%= check_box_tag :remove_image, "1", false, class: "form-check-input", style: "width: auto; margin: 0 8px 0 0;" %>
+          <%= label_tag :remove_image, "この画像を削除する", class: "form-check-label mb-0" %>
+        </div>
+      <% else %>
+        <p>現在画像は登録されていません。</p>
+      <% end %>
 
       <div>
       <span class="image">
@@ -35,6 +50,7 @@
       </div>
 
       <%= f.submit "編集内容を保存", class: "btn btn-primary" %>
+
       <%= link_to "単語マスタ", questions_path %>
     <% end %>
   </div>

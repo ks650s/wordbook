@@ -6,22 +6,23 @@
 // application.register('nested-form', RailsNestedForm)
 // import './add_jquery'
 
-//import "@hotwired/turbo-rails"
 // import "controllers"
 // import "../custom/image_upload"
 
 // require("@nathanvda/cocoon")
-import jquery from "jquery"
-window.jQuery = jquery
-window.$ = jquery
+// import jquery from "jquery"
+// window.jQuery = jquery
+// window.$ = jquery
+
+import "@hotwired/turbo-rails"
 
 import "bootsrap"
-(function(){
-  alert("jQuery 動いた！")
-})
 
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("add_fields の数: ", document.querySelectorAll('.add_fields').length);
+import "@oddcamp/cocoon-vanilla-js"
+
+document.addEventListener("cocoon:after-insert", function(e) {
+  console.log("フォームが追加されました", e.target);
 });
-
-import "@nathanvda/cocoon"
+document.addEventListener("cocoon:after-remove", function(e) {
+  console.log("フォームが削除されました", e.target);
+});

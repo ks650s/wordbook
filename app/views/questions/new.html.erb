@@ -22,8 +22,8 @@
       <% end %>
       </div>
 
-      <div id="similar-words-wrapper">
       <!--- 類義語の動的フォーム --->
+      <div id="similar-words-wrapper">
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
         <%= render 'question_similar_word_fields', f: question_similar_word_form %>
         <%#= render 'question_similar_word_fields', f: question_similar_word_form, locals: { f: question_similar_word_form } %>
@@ -34,10 +34,9 @@
       data: {
         association_insertion_node: '#similar-words-wrapper',
         association_insertion_method: :append
-      }
-    %>
-      </div>
-      </div>
+      } %>
+
+      </div></div>
 
       <div>
       <span class="image">

@@ -48,6 +48,9 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
+
+    # 画像を新しく登録＆古いのを消さず、二つ登録されてしまう状況では古い画像が勝手に消える
+    @question.image.purge if params[:remove_image] == "1"
     if @question.update(question_params)
       redirect_to questions_path
     else

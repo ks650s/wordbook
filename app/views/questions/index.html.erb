@@ -12,6 +12,7 @@
     <th>意味</th>
     <th>類義語</th>
     <th>タグ</th>
+    <th>画像</th>
     <th>アクション</th>
   </tr>
   <tr>
@@ -26,7 +27,12 @@
   <td><% question.tags.each do |tag| %>
     <%= tag.name %>
     <% end %>
-  </td>   
+  </td>  
+  <td>
+    <div class="img-container">
+    <%= image_tag question.image if question.image.attached? %>
+    </div>
+  </td> 
   <td><% if question.user_id == current_user.id %>
   <%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, data: { "turbo-method": :delete }%>
   <% else %>
