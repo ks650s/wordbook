@@ -14,7 +14,7 @@
   <td><%= tag.name %></td>
   <td>
    <% if tag.user_id == current_user.id %>
-   <%= link_to '修正', edit_tag_path(tag) %>・<%= link_to '削除', tag, data: { "turbo-method": :delete }%>
+   <%= link_to '修正', edit_tag_path(tag) %>・<%= link_to '削除', tag, method: :delete, data: { turbo: false } %>
   <% else %>
     作成者のみ
     <% end %></td>

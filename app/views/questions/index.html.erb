@@ -34,7 +34,7 @@
     </div>
   </td> 
   <td><% if question.user_id == current_user.id %>
-  <%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, data: { "turbo-method": :delete }%>
+  <%= link_to '編集', edit_question_path(question) %>・<%= link_to '削除', question, method: :delete, data: { turbo: false } %>
   <% else %>
     作成者のみ
     <% end %></td>

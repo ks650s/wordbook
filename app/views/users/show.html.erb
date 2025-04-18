@@ -16,7 +16,6 @@
   </ul>
   </div>
 </div>
-<%= link_to "ログアウト", logout_path,
-                                       data: { "turbo-method": :delete } %>
+<%#= link_to "ログアウト", logout_path, method: :delete %>
 <%#= link_to "ログアウト", logout_path, method :delete %>
-
+<%= link_to "ログアウト", logout_path, method: :delete, data: { confirm: "本当にログアウトしますか？" } %>

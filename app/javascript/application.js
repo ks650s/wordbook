@@ -14,15 +14,20 @@
 // window.jQuery = jquery
 // window.$ = jquery
 
-import "@hotwired/turbo-rails"
 
-import "bootsrap"
+// console.log("JS読んだ")
 
-import "@oddcamp/cocoon-vanilla-js"
+// import "@hotwired/turbo-rails"
 
-document.addEventListener("cocoon:after-insert", function(e) {
-  console.log("フォームが追加されました", e.target);
-});
-document.addEventListener("cocoon:after-remove", function(e) {
-  console.log("フォームが削除されました", e.target);
-});
+// import "bootstrap"
+
+// import "@oddcamp/cocoon-vanilla-js"
+
+// document.addEventListener("cocoon:after-insert", function (e) {
+//   console.log("フォームが追加されました", e.target);
+// });
+
+// document.addEventListener("cocoon:after-remove", function (e) {
+//   console.log("フォームが削除されました", e.target);
+// });
+

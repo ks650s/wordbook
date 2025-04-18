@@ -3,27 +3,26 @@ class FlashcardsController < ApplicationController
                                       :submit_session_answer, :result_session, 
                                       :result, :reset, :ranking, :resume]
 
-  #単語帳セッション一つを表示／個別の回答を見る使用
+  #単語帳セッション一つを表示／個別の回答を見る時に使用
   def show
     @flashcard = Flashcard.find(params[:id])
   end
 
 
   # index(単語帳メインページ)で現在ログインしてるユーザーの過去セッションを並べる
-  # 作成時間（降順）かつページネーション
+  # 作成時（降順）かつページネーション（5件）
   def index    
-    #@flashcards = current_user.flashcards.includes(:flashcard_questions).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
     @flashcards_raw = Flashcard.where(user: current_user)
                              .order(created_at: :desc)
                              .paginate(page: params[:page], per_page: 5)
 
-  @flashcards = @flashcards_raw.map do |fc|
-    {
-      flashcard: fc,
-      answered_count: fc.flashcard_questions.count { |fq| fq.user_answer.present? },
-      graded: fc.correct_count.present?
-    }
-  end
+    @flashcards = @flashcards_raw.map do |fc|
+      {
+        flashcard: fc,
+        answered_count: fc.flashcard_questions.count { |fq| fq.user_answer.present? },
+        graded: fc.correct_count.present?
+      }
+    end
   end
 
 

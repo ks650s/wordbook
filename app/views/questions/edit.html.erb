@@ -21,7 +21,7 @@
       <% end %>
       </div>
 
-      <div>
+      <div class="similar-words">
       <!--- 類義語の動的フォーム --->
       <%= f.fields_for :question_similar_words do |question_similar_word_form| %>
         <%= render 'question_similar_word_fields', f: question_similar_word_form %>
